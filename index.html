@@ -396,26 +396,26 @@
   <script>
     // DỮ LIỆU 20 PHÒNG
     const rooms = [
-      { id: 101, price: 2500000, area: 18, status: "Trống", image: "images/phong1.jpg",  note: "Gác lửng, WC riêng" },
-      { id: 102, price: 2700000, area: 20, status: "Trống", image: "images/phong2.jpg",  note: "Ban công, thoáng mát" },
-      { id: 103, price: 3000000, area: 22, status: "Đã thuê", image: "images/phong3.jpg",  note: "Có nội thất cơ bản" },
-      { id: 104, price: 2200000, area: 16, status: "Trống", image: "images/phong4.jpg",  note: "Tầng trệt, dễ di chuyển" },
-      { id: 105, price: 2600000, area: 19, status: "Đã thuê", image: "images/phong5.jpg",  note: "Phù hợp 2 người" },
-      { id: 106, price: 2800000, area: 21, status: "Trống", image: "images/phong6.jpg",  note: "Có máy lạnh" },
-      { id: 107, price: 3100000, area: 23, status: "Đã thuê", image: "images/phong7.jpg",  note: "Bao nước" },
-      { id: 108, price: 2300000, area: 17, status: "Trống", image: "images/phong8.jpg",  note: "Có chỗ để xe rộng" },
-      { id: 109, price: 2400000, area: 18, status: "Trống", image: "images/phong9.jpg",  note: "Gần cổng, tiện ra vào" },
-      { id: 110, price: 2900000, area: 20, status: "Đã thuê", image: "images/phong10.jpg", note: "Yên tĩnh, cuối dãy" },
-      { id: 111, price: 2550000, area: 19, status: "Trống", image: "images/phong11.jpg", note: "Cửa sổ lớn, nhiều ánh sáng" },
-      { id: 112, price: 2750000, area: 21, status: "Trống", image: "images/phong12.jpg", note: "WC trong phòng" },
-      { id: 113, price: 3050000, area: 24, status: "Đã thuê", image: "images/phong13.jpg", note: "Có bếp riêng" },
-      { id: 114, price: 2250000, area: 16, status: "Trống", image: "images/phong14.jpg", note: "Giá tiết kiệm" },
-      { id: 115, price: 2650000, area: 20, status: "Đã thuê", image: "images/phong15.jpg", note: "Phòng vuông vức, dễ bố trí" },
-      { id: 116, price: 2850000, area: 22, status: "Trống", image: "images/phong16.jpg", note: "Có máy nước nóng" },
-      { id: 117, price: 3150000, area: 25, status: "Trống", image: "images/phong17.jpg", note: "Ban công rộng" },
-      { id: 118, price: 2350000, area: 17, status: "Đã thuê", image: "images/phong18.jpg", note: "Cửa sổ thông thoáng" },
-      { id: 119, price: 2450000, area: 19, status: "Trống", image: "images/phong19.jpg", note: "Phù hợp gia đình nhỏ" },
-      { id: 120, price: 2950000, area: 23, status: "Trống", image: "images/phong20.jpg", note: "Có thể ở 3 người" }
+      { id: 1, price: 2500000, area: 18, status: "Trống", image: "images/phong1.jpg",  note: "Gác lửng, WC riêng" },
+      { id: 2, price: 2700000, area: 20, status: "Trống", image: "images/phong2.jpg",  note: "Ban công, thoáng mát" },
+      { id: 3, price: 3000000, area: 22, status: "Đã thuê", image: "images/phong3.jpg",  note: "Có nội thất cơ bản" },
+      { id: 4, price: 2200000, area: 16, status: "Trống", image: "images/phong4.jpg",  note: "Tầng trệt, dễ di chuyển" },
+      { id: 5, price: 2600000, area: 19, status: "Đã thuê", image: "images/phong5.jpg",  note: "Phù hợp 2 người" },
+      { id: 6, price: 2800000, area: 21, status: "Trống", image: "images/phong6.jpg",  note: "Có máy lạnh" },
+      { id: 7, price: 3100000, area: 23, status: "Đã thuê", image: "images/phong7.jpg",  note: "Bao nước" },
+      { id: 8, price: 2300000, area: 17, status: "Trống", image: "images/phong8.jpg",  note: "Có chỗ để xe rộng" },
+      { id: 9, price: 2400000, area: 18, status: "Trống", image: "images/phong9.jpg",  note: "Gần cổng, tiện ra vào" },
+      { id: 10, price: 2900000, area: 20, status: "Đã thuê", image: "images/phong10.jpg", note: "Yên tĩnh, cuối dãy" },
+      { id: 11, price: 2550000, area: 19, status: "Trống", image: "images/phong11.jpg", note: "Cửa sổ lớn, nhiều ánh sáng" },
+      { id: 12, price: 2750000, area: 21, status: "Trống", image: "images/phong12.jpg", note: "WC trong phòng" },
+      { id: 13, price: 3050000, area: 24, status: "Đã thuê", image: "images/phong13.jpg", note: "Có bếp riêng" },
+      { id: 14, price: 2250000, area: 16, status: "Trống", image: "images/phong14.jpg", note: "Giá tiết kiệm" },
+      { id: 15, price: 2650000, area: 20, status: "Đã thuê", image: "images/phong15.jpg", note: "Phòng vuông vức, dễ bố trí" },
+      { id: 16, price: 2850000, area: 22, status: "Trống", image: "images/phong16.jpg", note: "Có máy nước nóng" },
+      { id: 17, price: 3150000, area: 25, status: "Trống", image: "images/phong17.jpg", note: "Ban công rộng" },
+      { id: 18, price: 2350000, area: 17, status: "Đã thuê", image: "images/phong18.jpg", note: "Cửa sổ thông thoáng" },
+      { id: 19, price: 2450000, area: 19, status: "Trống", image: "images/phong19.jpg", note: "Phù hợp gia đình nhỏ" },
+      { id: 20, price: 2950000, area: 23, status: "Trống", image: "images/phong20.jpg", note: "Có thể ở 3 người" }
     ];
 
     // Biến toàn cục cho modal
