@@ -1,1 +1,459 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Trọ Quang Đại - Quản lý phòng trọ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px 15px 40px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    header h1 {
+      margin-bottom: 10px;
+      font-size: 28px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .summary {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .summary span {
+      background: #ffffff;
+      padding: 8px 14px;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .filters {
+      background: #ffffff;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .filters h2 {
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+
+    .filters-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 10px;
+    }
+
+    .filter-group {
+      flex: 1 1 200px;
+    }
+
+    .filter-group label {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+
+    .filter-group input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    .filter-actions {
+      margin-top: 5px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .filter-actions button {
+      padding: 8px 16px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    #filter-btn {
+      background-color: #2b7cff;
+      color: #fff;
+    }
+
+    #reset-btn {
+      background-color: #ddd;
+      color: #333;
+    }
+
+    .rooms {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 15px;
+    }
+
+    .room-card {
+      background: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .room-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      background: #eee;
+    }
+
+    .room-info {
+      padding: 10px 12px 12px;
+      font-size: 14px;
+    }
+
+    .room-info h3 {
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .room-info p {
+      margin-bottom: 3px;
+    }
+
+    .status-trong {
+      color: #0a8a00;
+      font-weight: bold;
+    }
+
+    .status-dathue {
+      color: #d60000;
+      font-weight: bold;
+    }
+
+    .no-result {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      font-size: 15px;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 22px;
+      }
+      .summary {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- TIÊU ĐỀ + THÔNG TIN TỔNG QUAN -->
+    <header>
+      <h1>Trọ Quang Đại</h1>
+      <div class="summary">
+        <span>Tổng số phòng: <span id="total-rooms">0</span></span>
+        <span>Số phòng còn trống: <span id="available-rooms">0</span></span>
+      </div>
+    </header>
+
+    <!-- KHU VỰC TÌM KIẾM -->
+    <section class="filters">
+      <h2>Tìm kiếm phòng theo giá và diện tích</h2>
+      <div class="filters-row">
+        <div class="filter-group">
+          <label for="max-price">Giá tối đa (VND/tháng)</label>
+          <input type="number" id="max-price" placeholder="Ví dụ: 3000000" />
+        </div>
+        <div class="filter-group">
+          <label for="min-area">Diện tích tối thiểu (m²)</label>
+          <input type="number" id="min-area" placeholder="Ví dụ: 20" />
+        </div>
+      </div>
+      <div class="filter-actions">
+        <button id="filter-btn">Lọc phòng</button>
+        <button id="reset-btn">Xóa lọc</button>
+      </div>
+    </section>
+
+    <!-- DANH SÁCH PHÒNG -->
+    <section class="rooms" id="rooms-container">
+      <!-- JS sẽ tự render danh sách phòng ở đây -->
+    </section>
+  </div>
+
+  <script>
+    // DỮ LIỆU 20 PHÒNG
+    const rooms = [
+      {
+        id: 101,
+        price: 2500000,
+        area: 18,
+        status: "Trống",
+        image: "images/phong1.jpg",
+        note: "Gác lửng, WC riêng"
+      },
+      {
+        id: 102,
+        price: 2700000,
+        area: 20,
+        status: "Trống",
+        image: "images/phong2.jpg",
+        note: "Ban công, thoáng mát"
+      },
+      {
+        id: 103,
+        price: 3000000,
+        area: 22,
+        status: "Đã thuê",
+        image: "images/phong3.jpg",
+        note: "Có nội thất cơ bản"
+      },
+      {
+        id: 104,
+        price: 2200000,
+        area: 16,
+        status: "Trống",
+        image: "images/phong4.jpg",
+        note: "Tầng trệt, dễ di chuyển"
+      },
+      {
+        id: 105,
+        price: 2600000,
+        area: 19,
+        status: "Đã thuê",
+        image: "images/phong5.jpg",
+        note: "Phù hợp 2 người"
+      },
+      {
+        id: 106,
+        price: 2800000,
+        area: 21,
+        status: "Trống",
+        image: "images/phong6.jpg",
+        note: "Có máy lạnh"
+      },
+      {
+        id: 107,
+        price: 3100000,
+        area: 23,
+        status: "Đã thuê",
+        image: "images/phong7.jpg",
+        note: "Bao nước"
+      },
+      {
+        id: 108,
+        price: 2300000,
+        area: 17,
+        status: "Trống",
+        image: "images/phong8.jpg",
+        note: "Có chỗ để xe rộng"
+      },
+      {
+        id: 109,
+        price: 2400000,
+        area: 18,
+        status: "Trống",
+        image: "images/phong9.jpg",
+        note: "Gần cổng, tiện ra vào"
+      },
+      {
+        id: 110,
+        price: 2900000,
+        area: 20,
+        status: "Đã thuê",
+        image: "images/phong10.jpg",
+        note: "Yên tĩnh, cuối dãy"
+      },
+      {
+        id: 111,
+        price: 2550000,
+        area: 19,
+        status: "Trống",
+        image: "images/phong11.jpg",
+        note: "Cửa sổ lớn, nhiều ánh sáng"
+      },
+      {
+        id: 112,
+        price: 2750000,
+        area: 21,
+        status: "Trống",
+        image: "images/phong12.jpg",
+        note: "WC trong phòng"
+      },
+      {
+        id: 113,
+        price: 3050000,
+        area: 24,
+        status: "Đã thuê",
+        image: "images/phong13.jpg",
+        note: "Có bếp riêng"
+      },
+      {
+        id: 114,
+        price: 2250000,
+        area: 16,
+        status: "Trống",
+        image: "images/phong14.jpg",
+        note: "Giá tiết kiệm"
+      },
+      {
+        id: 115,
+        price: 2650000,
+        area: 20,
+        status: "Đã thuê",
+        image: "images/phong15.jpg",
+        note: "Phòng vuông vức, dễ bố trí"
+      },
+      {
+        id: 116,
+        price: 2850000,
+        area: 22,
+        status: "Trống",
+        image: "images/phong16.jpg",
+        note: "Có máy nước nóng"
+      },
+      {
+        id: 117,
+        price: 3150000,
+        area: 25,
+        status: "Trống",
+        image: "images/phong17.jpg",
+        note: "Ban công rộng"
+      },
+      {
+        id: 118,
+        price: 2350000,
+        area: 17,
+        status: "Đã thuê",
+        image: "images/phong18.jpg",
+        note: "Cửa sổ thông thoáng"
+      },
+      {
+        id: 119,
+        price: 2450000,
+        area: 19,
+        status: "Trống",
+        image: "images/phong19.jpg",
+        note: "Phù hợp gia đình nhỏ"
+      },
+      {
+        id: 120,
+        price: 2950000,
+        area: 23,
+        status: "Trống",
+        image: "images/phong20.jpg",
+        note: "Có thể ở 3 người"
+      }
+    ];
+
+    // Cập nhật tổng số phòng & số phòng trống
+    function updateSummary() {
+      const total = rooms.length;
+      const available = rooms.filter(r => r.status === "Trống").length;
+      document.getElementById("total-rooms").textContent = total;
+      document.getElementById("available-rooms").textContent = available;
+    }
+
+    // Render danh sách phòng ra giao diện
+    function renderRooms(list) {
+      const container = document.getElementById("rooms-container");
+      container.innerHTML = "";
+
+      if (list.length === 0) {
+        container.innerHTML = '<div class="no-result">Không tìm thấy phòng phù hợp với điều kiện lọc.</div>';
+        return;
+      }
+
+      list.forEach(room => {
+        const card = document.createElement("div");
+        card.className = "room-card";
+
+        const statusClass = room.status === "Trống" ? "status-trong" : "status-dathue";
+
+        card.innerHTML = `
+          <img src="${room.image}" alt="Phòng ${room.id}" />
+          <div class="room-info">
+            <h3>Phòng ${room.id}</h3>
+            <p><strong>Giá:</strong> ${room.price.toLocaleString("vi-VN")} VND/tháng</p>
+            <p><strong>Diện tích:</strong> ${room.area} m²</p>
+            <p><strong>Trạng thái:</strong> <span class="${statusClass}">${room.status}</span></p>
+            <p>${room.note}</p>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Áp dụng bộ lọc
+    function applyFilter() {
+      const maxPriceValue = document.getElementById("max-price").value;
+      const minAreaValue = document.getElementById("min-area").value;
+
+      const maxPrice = Number(maxPriceValue);
+      const minArea = Number(minAreaValue);
+
+      let filtered = rooms.slice();
+
+      if (maxPriceValue !== "") {
+        filtered = filtered.filter(r => r.price <= maxPrice);
+      }
+
+      if (minAreaValue !== "") {
+        filtered = filtered.filter(r => r.area >= minArea);
+      }
+
+      renderRooms(filtered);
+    }
+
+    // Gán sự kiện
+    document.getElementById("filter-btn").addEventListener("click", applyFilter);
+
+    document.getElementById("reset-btn").addEventListener("click", () => {
+      document.getElementById("max-price").value = "";
+      document.getElementById("min-area").value = "";
+      renderRooms(rooms);
+    });
+
+    window.addEventListener("load", () => {
+      updateSummary();
+      renderRooms(rooms);
+    });
+  </script>
+</body>
+</html>
 
