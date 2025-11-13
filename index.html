@@ -289,24 +289,25 @@
       filter: brightness(0.9);
     }
 
-    .nav-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 48px;
-      height: 72px;
-      border-radius: 8px;
-      border: 2px solid #000;
-      cursor: pointer;
-      font-size: 30px;
-      font-weight: bold;
-      background: #8bc34a;
-      color: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1001;
-    }
+   .nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;     /* 48px / 3 */
+  height: 24px;    /* 72px / 3 */
+  border-radius: 4px;
+  border: 1px solid #000;    /* nhỏ lại */
+  cursor: pointer;
+  font-size: 12px; /* 30px / 3 = 10px nhưng tăng nhẹ cho dễ nhìn */
+  font-weight: bold;
+  background: #8bc34a;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+}
+
 
     #prev-room {
       left: 10px;
