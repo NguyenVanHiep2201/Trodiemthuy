@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -35,13 +34,20 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
     }
 
     header h1 {
       font-size: 28px;
       text-transform: uppercase;
       letter-spacing: 1px;
+    }
+
+    .version-tag {
+      font-size: 13px;
+      color: #d32f2f;
+      font-weight: bold;
+      margin-bottom: 10px;
     }
 
     .home-btn-main {
@@ -210,6 +216,8 @@
       max-height: 80%;
       border-radius: 8px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      transition: transform 0.2s ease;
+      transform-origin: center center;
     }
 
     .modal-close-btn {
@@ -220,6 +228,7 @@
       color: #fff;
       cursor: pointer;
       user-select: none;
+      z-index: 1001;
     }
 
     .home-btn-modal {
@@ -231,9 +240,10 @@
       border: none;
       cursor: pointer;
       font-size: 14px;
-      background-color: #2b7cff;
+      background-color: #ff9800;
       color: #fff;
       font-weight: bold;
+      z-index: 1001;
     }
 
     .home-btn-modal:hover {
@@ -249,6 +259,65 @@
       font-size: 16px;
       text-align: center;
       max-width: 90%;
+      z-index: 1001;
+    }
+
+    /* Nút zoom + chuyển phòng trong modal */
+    .zoom-controls {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 1001;
+    }
+
+    .zoom-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid #000;
+      cursor: pointer;
+      font-size: 22px;
+      font-weight: bold;
+      background: #ffeb3b;
+      color: #000;
+    }
+
+    .zoom-btn:hover {
+      filter: brightness(0.9);
+    }
+
+    .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 72px;
+      border-radius: 8px;
+      border: 2px solid #000;
+      cursor: pointer;
+      font-size: 30px;
+      font-weight: bold;
+      background: #8bc34a;
+      color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1001;
+    }
+
+    #prev-room {
+      left: 10px;
+    }
+
+    #next-room {
+      right: 10px;
+    }
+
+    .nav-btn:hover {
+      filter: brightness(0.9);
     }
 
     @media (max-width: 600px) {
@@ -272,6 +341,7 @@
         <h1>Trọ Quang Đại</h1>
         <button class="home-btn-main" onclick="goHome()">Home</button>
       </div>
+      <div class="version-tag">SĐT: </div>
       <div class="summary">
         <span>Tổng số phòng: <span id="total-rooms">0</span></span>
         <span>Số phòng còn trống: <span id="available-rooms">0</span></span>
@@ -307,174 +377,53 @@
   <div id="image-modal" class="image-modal">
     <span class="modal-close-btn" id="modal-close">&times;</span>
     <button class="home-btn-modal" onclick="goHome()">Home</button>
+
+    <!-- Nút chuyển phòng -->
+    <button class="nav-btn" id="prev-room">&#10094;</button>
+    <button class="nav-btn" id="next-room">&#10095;</button>
+
     <img id="modal-img" src="" alt="" />
     <div class="image-modal-text" id="modal-caption"></div>
+
+    <!-- Nút zoom -->
+    <div class="zoom-controls">
+      <button class="zoom-btn" id="zoom-in">+</button>
+      <button class="zoom-btn" id="zoom-out">-</button>
+    </div>
   </div>
 
   <script>
     // DỮ LIỆU 20 PHÒNG
     const rooms = [
-      {
-        id: 1,
-        price: 2500000,
-        area: 18,
-        status: "Trống",
-        image: "images/phong1.jpg",
-        note: "Gác lửng, WC riêng"
-      },
-      {
-        id: 2,
-        price: 2700000,
-        area: 20,
-        status: "Trống",
-        image: "images/phong2.jpg",
-        note: "Ban công, thoáng mát"
-      },
-      {
-        id: 3,
-        price: 3000000,
-        area: 22,
-        status: "Đã thuê",
-        image: "images/phong3.jpg",
-        note: "Có nội thất cơ bản"
-      },
-      {
-        id: 4,
-        price: 2200000,
-        area: 16,
-        status: "Trống",
-        image: "images/phong4.jpg",
-        note: "Tầng trệt, dễ di chuyển"
-      },
-      {
-        id: 5,
-        price: 2600000,
-        area: 19,
-        status: "Đã thuê",
-        image: "images/phong5.jpg",
-        note: "Phù hợp 2 người"
-      },
-      {
-        id: 6,
-        price: 2800000,
-        area: 21,
-        status: "Trống",
-        image: "images/phong6.jpg",
-        note: "Có máy lạnh"
-      },
-      {
-        id: 7,
-        price: 3100000,
-        area: 23,
-        status: "Đã thuê",
-        image: "images/phong7.jpg",
-        note: "Bao nước"
-      },
-      {
-        id: 8,
-        price: 2300000,
-        area: 17,
-        status: "Trống",
-        image: "images/phong8.jpg",
-        note: "Có chỗ để xe rộng"
-      },
-      {
-        id: 9,
-        price: 2400000,
-        area: 18,
-        status: "Trống",
-        image: "images/phong9.jpg",
-        note: "Gần cổng, tiện ra vào"
-      },
-      {
-        id: 10,
-        price: 2900000,
-        area: 20,
-        status: "Đã thuê",
-        image: "images/phong10.jpg",
-        note: "Yên tĩnh, cuối dãy"
-      },
-      {
-        id: 11,
-        price: 2550000,
-        area: 19,
-        status: "Trống",
-        image: "images/phong11.jpg",
-        note: "Cửa sổ lớn, nhiều ánh sáng"
-      },
-      {
-        id: 12,
-        price: 2750000,
-        area: 21,
-        status: "Trống",
-        image: "images/phong12.jpg",
-        note: "WC trong phòng"
-      },
-      {
-        id: 13,
-        price: 3050000,
-        area: 24,
-        status: "Đã thuê",
-        image: "images/phong13.jpg",
-        note: "Có bếp riêng"
-      },
-      {
-        id: 14,
-        price: 2250000,
-        area: 16,
-        status: "Trống",
-        image: "images/phong14.jpg",
-        note: "Giá tiết kiệm"
-      },
-      {
-        id: 15,
-        price: 2650000,
-        area: 20,
-        status: "Đã thuê",
-        image: "images/phong15.jpg",
-        note: "Phòng vuông vức, dễ bố trí"
-      },
-      {
-        id: 16,
-        price: 2850000,
-        area: 22,
-        status: "Trống",
-        image: "images/phong16.jpg",
-        note: "Có máy nước nóng"
-      },
-      {
-        id: 17,
-        price: 3150000,
-        area: 25,
-        status: "Trống",
-        image: "images/phong17.jpg",
-        note: "Ban công rộng"
-      },
-      {
-        id: 18,
-        price: 2350000,
-        area: 17,
-        status: "Đã thuê",
-        image: "images/phong18.jpg",
-        note: "Cửa sổ thông thoáng"
-      },
-      {
-        id: 19,
-        price: 2450000,
-        area: 19,
-        status: "Trống",
-        image: "images/phong19.jpg",
-        note: "Phù hợp gia đình nhỏ"
-      },
-      {
-        id: 20,
-        price: 2950000,
-        area: 23,
-        status: "Trống",
-        image: "images/phong20.jpg",
-        note: "Có thể ở 3 người"
-      }
+      { id: 101, price: 2500000, area: 18, status: "Trống", image: "images/phong1.jpg",  note: "Gác lửng, WC riêng" },
+      { id: 102, price: 2700000, area: 20, status: "Trống", image: "images/phong2.jpg",  note: "Ban công, thoáng mát" },
+      { id: 103, price: 3000000, area: 22, status: "Đã thuê", image: "images/phong3.jpg",  note: "Có nội thất cơ bản" },
+      { id: 104, price: 2200000, area: 16, status: "Trống", image: "images/phong4.jpg",  note: "Tầng trệt, dễ di chuyển" },
+      { id: 105, price: 2600000, area: 19, status: "Đã thuê", image: "images/phong5.jpg",  note: "Phù hợp 2 người" },
+      { id: 106, price: 2800000, area: 21, status: "Trống", image: "images/phong6.jpg",  note: "Có máy lạnh" },
+      { id: 107, price: 3100000, area: 23, status: "Đã thuê", image: "images/phong7.jpg",  note: "Bao nước" },
+      { id: 108, price: 2300000, area: 17, status: "Trống", image: "images/phong8.jpg",  note: "Có chỗ để xe rộng" },
+      { id: 109, price: 2400000, area: 18, status: "Trống", image: "images/phong9.jpg",  note: "Gần cổng, tiện ra vào" },
+      { id: 110, price: 2900000, area: 20, status: "Đã thuê", image: "images/phong10.jpg", note: "Yên tĩnh, cuối dãy" },
+      { id: 111, price: 2550000, area: 19, status: "Trống", image: "images/phong11.jpg", note: "Cửa sổ lớn, nhiều ánh sáng" },
+      { id: 112, price: 2750000, area: 21, status: "Trống", image: "images/phong12.jpg", note: "WC trong phòng" },
+      { id: 113, price: 3050000, area: 24, status: "Đã thuê", image: "images/phong13.jpg", note: "Có bếp riêng" },
+      { id: 114, price: 2250000, area: 16, status: "Trống", image: "images/phong14.jpg", note: "Giá tiết kiệm" },
+      { id: 115, price: 2650000, area: 20, status: "Đã thuê", image: "images/phong15.jpg", note: "Phòng vuông vức, dễ bố trí" },
+      { id: 116, price: 2850000, area: 22, status: "Trống", image: "images/phong16.jpg", note: "Có máy nước nóng" },
+      { id: 117, price: 3150000, area: 25, status: "Trống", image: "images/phong17.jpg", note: "Ban công rộng" },
+      { id: 118, price: 2350000, area: 17, status: "Đã thuê", image: "images/phong18.jpg", note: "Cửa sổ thông thoáng" },
+      { id: 119, price: 2450000, area: 19, status: "Trống", image: "images/phong19.jpg", note: "Phù hợp gia đình nhỏ" },
+      { id: 120, price: 2950000, area: 23, status: "Trống", image: "images/phong20.jpg", note: "Có thể ở 3 người" }
     ];
+
+    // Biến toàn cục cho modal
+    let currentRoomIndex = 0;
+    let currentScale = 1;
+
+    const modal     = document.getElementById("image-modal");
+    const modalImg  = document.getElementById("modal-img");
+    const caption   = document.getElementById("modal-caption");
 
     // Cập nhật tổng số phòng & số phòng trống
     function updateSummary() {
@@ -484,29 +433,43 @@
       document.getElementById("available-rooms").textContent = available;
     }
 
-    // Mở modal ảnh full màn hình
-    function openImageModal(src, captionText) {
-      const modal = document.getElementById("image-modal");
-      const modalImg = document.getElementById("modal-img");
-      const caption = document.getElementById("modal-caption");
+    // Set scale (zoom) cho ảnh, giới hạn 0.5x - 3x
+    function setScale(newScale) {
+      currentScale = Math.min(3, Math.max(0.5, newScale));
+      modalImg.style.transform = `scale(${currentScale})`;
+    }
 
-      modalImg.src = src;
-      caption.textContent = captionText || "";
+    // Mở modal ảnh full màn hình theo index phòng
+    function openImageModal(index) {
+      currentRoomIndex = index;
+      const room = rooms[index];
+
+      modalImg.src = room.image;
+      caption.textContent =
+        `Phòng ${room.id} - ${room.area} m² - ${room.price.toLocaleString("vi-VN")} VND/tháng`;
       modal.style.display = "flex";
+      setScale(1); // reset zoom
     }
 
     // Đóng modal ảnh
     function closeImageModal() {
-      const modal = document.getElementById("image-modal");
       modal.style.display = "none";
     }
 
-    // Hàm Home: đóng modal (nếu đang mở) + cuộn về đầu trang
+    // Hàm Home: đóng modal (nếu đang mở) + cuộn lên đầu trang
     function goHome() {
       closeImageModal();
       window.scrollTo({ top: 0, behavior: "smooth" });
-      // Nếu muốn chắc chắn reload lại file index.html:
-      // window.location.href = "index.html";
+    }
+
+    // Chuyển sang phòng theo index, có chạy vòng (loop)
+    function showRoomByIndex(index) {
+      if (index < 0) {
+        index = rooms.length - 1;
+      } else if (index >= rooms.length) {
+        index = 0;
+      }
+      openImageModal(index);
     }
 
     // Render danh sách phòng ra giao diện
@@ -515,11 +478,12 @@
       container.innerHTML = "";
 
       if (list.length === 0) {
-        container.innerHTML = '<div class="no-result">Không tìm thấy phòng phù hợp với điều kiện lọc.</div>';
+        container.innerHTML =
+          '<div class="no-result">Không tìm thấy phòng phù hợp với điều kiện lọc.</div>';
         return;
       }
 
-      list.forEach(room => {
+      list.forEach((room, index) => {
         const card = document.createElement("div");
         card.className = "room-card";
 
@@ -539,9 +503,7 @@
         // Bấm ảnh → mở modal full màn hình
         const img = card.querySelector("img");
         img.addEventListener("click", () => {
-          const captionText =
-            `Phòng ${room.id} - ${room.area} m² - ${room.price.toLocaleString("vi-VN")} VND/tháng`;
-          openImageModal(room.image, captionText);
+          openImageModal(index);
         });
 
         container.appendChild(card);
@@ -551,10 +513,10 @@
     // Áp dụng bộ lọc
     function applyFilter() {
       const maxPriceValue = document.getElementById("max-price").value;
-      const minAreaValue = document.getElementById("min-area").value;
+      const minAreaValue  = document.getElementById("min-area").value;
 
       const maxPrice = Number(maxPriceValue);
-      const minArea = Number(minAreaValue);
+      const minArea  = Number(minAreaValue);
 
       let filtered = rooms.slice();
 
@@ -573,20 +535,42 @@
     document.getElementById("filter-btn").addEventListener("click", applyFilter);
     document.getElementById("reset-btn").addEventListener("click", () => {
       document.getElementById("max-price").value = "";
-      document.getElementById("min-area").value = "";
+      document.getElementById("min-area").value  = "";
       renderRooms(rooms);
     });
 
-    // Sự kiện cho modal: nút X và click nền đen để đóng
+    // Modal: nút X và click nền đen để đóng
     document.getElementById("modal-close").addEventListener("click", (e) => {
       e.stopPropagation();
       closeImageModal();
     });
 
-    document.getElementById("image-modal").addEventListener("click", (e) => {
+    modal.addEventListener("click", (e) => {
       if (e.target.id === "image-modal") {
         closeImageModal();
       }
+    });
+
+    // Nút zoom
+    document.getElementById("zoom-in").addEventListener("click", (e) => {
+      e.stopPropagation();
+      setScale(currentScale + 0.2);
+    });
+
+    document.getElementById("zoom-out").addEventListener("click", (e) => {
+      e.stopPropagation();
+      setScale(currentScale - 0.2);
+    });
+
+    // Nút chuyển phòng
+    document.getElementById("prev-room").addEventListener("click", (e) => {
+      e.stopPropagation();
+      showRoomByIndex(currentRoomIndex - 1);
+    });
+
+    document.getElementById("next-room").addEventListener("click", (e) => {
+      e.stopPropagation();
+      showRoomByIndex(currentRoomIndex + 1);
     });
 
     // Khi trang tải xong
@@ -597,8 +581,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
