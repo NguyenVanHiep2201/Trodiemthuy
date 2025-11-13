@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <title>Trọ Quang Đại  -  Quản lý phòng trọ</title>
+  <title>Trọ Quang Đại - Quản lý phòng trọ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     * {
@@ -25,37 +25,15 @@
     }
 
     header {
+      text-align: center;
       margin-bottom: 20px;
     }
 
-    /* Thanh trên cùng: tiêu đề + nút Home */
-    .header-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
     header h1 {
+      margin-bottom: 10px;
       font-size: 28px;
       text-transform: uppercase;
       letter-spacing: 1px;
-    }
-
-    .home-btn-main {
-      padding: 8px 16px;
-      border-radius: 4px;
-      border: none;
-      cursor: pointer;
-      font-size: 14px;
-      background-color: #2b7cff;
-      color: #fff;
-      font-weight: bold;
-    }
-
-    .home-btn-main:hover {
-      opacity: 0.9;
     }
 
     .summary {
@@ -156,7 +134,6 @@
       height: 160px;
       object-fit: cover;
       background: #eee;
-      cursor: pointer;
     }
 
     .room-info {
@@ -193,120 +170,6 @@
       font-size: 15px;
     }
 
-    /* FULLSCREEN IMAGE MODAL */
-    .image-modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.85);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 999;
-    }
-
-    .image-modal img {
-      max-width: 90%;
-      max-height: 80%;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-      transition: transform 0.2s ease;
-      transform-origin: center center;
-    }
-
-    .modal-close-btn {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 28px;
-      color: #fff;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .home-btn-modal {
-      position: absolute;
-      top: 10px;
-      left: 15px;
-      padding: 8px 16px;
-      border-radius: 4px;
-      border: none;
-      cursor: pointer;
-      font-size: 14px;
-      background-color: #2b7cff;
-      color: #fff;
-      font-weight: bold;
-    }
-
-    .home-btn-modal:hover {
-      opacity: 0.9;
-    }
-
-    .image-modal-text {
-      position: absolute;
-      bottom: 15px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: #fff;
-      font-size: 16px;
-      text-align: center;
-      max-width: 90%;
-    }
-
-    /* Nút zoom + chuyển phòng trong modal */
-    .zoom-controls {
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .zoom-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      border: none;
-      cursor: pointer;
-      font-size: 20px;
-      font-weight: bold;
-      background: #ffffff;
-      color: #333;
-    }
-
-    .zoom-btn:hover {
-      opacity: 0.9;
-    }
-
-    .nav-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 40px;
-      height: 60px;
-      border-radius: 4px;
-      border: none;
-      cursor: pointer;
-      font-size: 26px;
-      background: rgba(255, 255, 255, 0.8);
-      color: #333;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #prev-room {
-      left: 10px;
-    }
-
-    #next-room {
-      right: 10px;
-    }
-
-    .nav-btn:hover {
-      background: #ffffff;
-    }
-
     @media (max-width: 600px) {
       header h1 {
         font-size: 22px;
@@ -314,20 +177,14 @@
       .summary {
         font-size: 14px;
       }
-      .image-modal-text {
-        font-size: 14px;
-      }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- TIÊU ĐỀ + NÚT HOME + THÔNG TIN TỔNG QUAN -->
+    <!-- TIÊU ĐỀ + THÔNG TIN TỔNG QUAN -->
     <header>
-      <div class="header-top">
-        <h1>Trọ Quang Đại</h1>
-        <button class="home-btn-main" onclick="goHome()">Home</button>
-      </div>
+      <h1>Trọ Quang Đại</h1>
       <div class="summary">
         <span>Tổng số phòng: <span id="total-rooms">0</span></span>
         <span>Số phòng còn trống: <span id="available-rooms">0</span></span>
@@ -357,25 +214,6 @@
     <section class="rooms" id="rooms-container">
       <!-- JS sẽ tự render danh sách phòng ở đây -->
     </section>
-  </div>
-
-  <!-- MODAL ẢNH TOÀN MÀN HÌNH -->
-  <div id="image-modal" class="image-modal">
-    <span class="modal-close-btn" id="modal-close">&times;</span>
-    <button class="home-btn-modal" onclick="goHome()">Home</button>
-
-    <!-- Nút chuyển phòng -->
-    <button class="nav-btn" id="prev-room">&#10094;</button>
-    <button class="nav-btn" id="next-room">&#10095;</button>
-
-    <img id="modal-img" src="" alt="" />
-    <div class="image-modal-text" id="modal-caption"></div>
-
-    <!-- Nút zoom -->
-    <div class="zoom-controls">
-      <button class="zoom-btn" id="zoom-in">+</button>
-      <button class="zoom-btn" id="zoom-out">-</button>
-    </div>
   </div>
 
   <script>
@@ -543,60 +381,12 @@
       }
     ];
 
-    // Biến toàn cục cho modal
-    let currentRoomIndex = 0;
-    let currentScale = 1;
-
-    const modal = document.getElementById("image-modal");
-    const modalImg = document.getElementById("modal-img");
-    const caption = document.getElementById("modal-caption");
-
     // Cập nhật tổng số phòng & số phòng trống
     function updateSummary() {
       const total = rooms.length;
       const available = rooms.filter(r => r.status === "Trống").length;
       document.getElementById("total-rooms").textContent = total;
       document.getElementById("available-rooms").textContent = available;
-    }
-
-    // Set scale (zoom) cho ảnh, giới hạn 0.5x - 3x
-    function setScale(newScale) {
-      currentScale = Math.min(3, Math.max(0.5, newScale));
-      modalImg.style.transform = `scale(${currentScale})`;
-    }
-
-    // Mở modal ảnh full màn hình theo index phòng
-    function openImageModal(index) {
-      currentRoomIndex = index;
-      const room = rooms[index];
-
-      modalImg.src = room.image;
-      caption.textContent = `Phòng ${room.id} - ${room.area} m² - ${room.price.toLocaleString("vi-VN")} VND/tháng`;
-      modal.style.display = "flex";
-      setScale(1); // reset zoom
-    }
-
-    // Đóng modal ảnh
-    function closeImageModal() {
-      modal.style.display = "none";
-    }
-
-    // Hàm Home: đóng modal + cuộn lên đầu
-    function goHome() {
-      closeImageModal();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      // Nếu muốn luôn reload trang:
-      // window.location.href = "index.html";
-    }
-
-    // Chuyển sang phòng theo index, có chạy vòng (loop)
-    function showRoomByIndex(index) {
-      if (index < 0) {
-        index = rooms.length - 1;
-      } else if (index >= rooms.length) {
-        index = 0;
-      }
-      openImageModal(index);
     }
 
     // Render danh sách phòng ra giao diện
@@ -609,7 +399,7 @@
         return;
       }
 
-      list.forEach((room, index) => {
+      list.forEach(room => {
         const card = document.createElement("div");
         card.className = "room-card";
 
@@ -625,12 +415,6 @@
             <p>${room.note}</p>
           </div>
         `;
-
-        const img = card.querySelector("img");
-        img.addEventListener("click", () => {
-          openImageModal(index);
-        });
-
         container.appendChild(card);
       });
     }
@@ -663,40 +447,6 @@
       document.getElementById("max-price").value = "";
       document.getElementById("min-area").value = "";
       renderRooms(rooms);
-    });
-
-    // Modal: nút đóng & click nền đen để tắt
-    document.getElementById("modal-close").addEventListener("click", (e) => {
-      e.stopPropagation();
-      closeImageModal();
-    });
-
-    modal.addEventListener("click", (e) => {
-      if (e.target.id === "image-modal") {
-        closeImageModal();
-      }
-    });
-
-    // Nút zoom
-    document.getElementById("zoom-in").addEventListener("click", (e) => {
-      e.stopPropagation();
-      setScale(currentScale + 0.2);
-    });
-
-    document.getElementById("zoom-out").addEventListener("click", (e) => {
-      e.stopPropagation();
-      setScale(currentScale - 0.2);
-    });
-
-    // Nút chuyển phòng
-    document.getElementById("prev-room").addEventListener("click", (e) => {
-      e.stopPropagation();
-      showRoomByIndex(currentRoomIndex - 1);
-    });
-
-    document.getElementById("next-room").addEventListener("click", (e) => {
-      e.stopPropagation();
-      showRoomByIndex(currentRoomIndex + 1);
     });
 
     window.addEventListener("load", () => {
